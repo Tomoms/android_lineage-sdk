@@ -554,6 +554,13 @@ public final class LineageSettings {
                 "notification_light_pulse_custom_values";
 
         /**
+         * Whether the three-finger swipe for screenshot gesture is enabled or not.
+         * 0 = off, 1 = on
+         * @hide
+         */
+        public static final String THREE_FINGER_GESTURE = "three_finger_gesture";
+
+        /**
          * @hide
          */
         public static final String[] LEGACY_SYSTEM_SETTINGS = new String[]{

@@ -2037,6 +2037,17 @@ public final class LineageSettings {
                 sBooleanValidator;
 
         /**
+         * Whether the three-finger swipe for screenshot gesture is activated or not.
+         * 0 = off, 1 = on
+         */
+        public static final String THREE_FINGER_GESTURE =
+                "three_finger_gesture";
+
+        /** @hide */
+        public static final Validator THREE_FINGER_GESTURE_VALIDATOR =
+                sBooleanValidator;
+
+        /**
          * I can haz more bukkits
          * @hide
          */
@@ -2300,6 +2311,8 @@ public final class LineageSettings {
                     CLICK_PARTIAL_SCREENSHOT_VALIDATOR);
             VALIDATORS.put(ENABLE_TASKBAR,
                     ENABLE_TASKBAR_VALIDATOR);
+            VALIDATORS.put(THREE_FINGER_GESTURE,
+                    THREE_FINGER_GESTURE_VALIDATOR);
             VALIDATORS.put(__MAGICAL_TEST_PASSING_ENABLER,
                     __MAGICAL_TEST_PASSING_ENABLER_VALIDATOR);
         };
