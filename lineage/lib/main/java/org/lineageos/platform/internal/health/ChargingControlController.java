@@ -64,22 +64,22 @@ import static lineageos.health.HealthInterface.MODE_LIMIT;
 public class ChargingControlController extends LineageHealthFeature {
     private final IChargingControl mChargingControl;
     private final ContentResolver mContentResolver;
-    private final ChargingControlNotification mChargingNotification;
+    private ChargingControlNotification mChargingNotification;
     private LineageHealthBatteryBroadcastReceiver mBattReceiver;
 
     // Defaults
-    private final boolean mDefaultEnabled;
-    private final int mDefaultMode;
-    private final int mDefaultLimit;
-    private final int mDefaultStartTime;
-    private final int mDefaultTargetTime;
+    private boolean mDefaultEnabled = false;
+    private int mDefaultMode;
+    private int mDefaultLimit;
+    private int mDefaultStartTime;
+    private int mDefaultTargetTime;
 
     // User configs
-    private boolean mConfigEnabled = false;
+    private boolean mConfigEnabled;
+    private int mConfigStartTime;
+    private int mConfigTargetTime;
     private int mConfigMode = MODE_NONE;
     private int mConfigLimit = 100;
-    private int mConfigStartTime = 0;
-    private int mConfigTargetTime = 0;
 
     // Settings uris
     private final Uri MODE_URI = LineageSettings.System.getUriFor(
@@ -94,18 +94,18 @@ public class ChargingControlController extends LineageHealthFeature {
             LineageSettings.System.CHARGING_CONTROL_TARGET_TIME);
 
     // Internal state
-    private float mBatteryPct = 0;
-    private boolean mIsPowerConnected = false;
-    private int mChargingStopReason = 0;
-    private long mEstimatedFullTime = 0;
-    private long mSavedAlarmTime = 0;
-    private long mSavedTargetTime = 0;
-    private boolean mIsControlCancelledOnce = false;
-    private final boolean mIsChargingToggleSupported;
-    private final boolean mIsChargingBypassSupported;
-    private final boolean mIsChargingDeadlineSupported;
-    private final int mChargingTimeMargin;
-    private final int mChargingLimitMargin;
+    private float mBatteryPct;
+    private long mEstimatedFullTime;
+    private long mSavedAlarmTime;
+    private long mSavedTargetTime;
+    private boolean mIsPowerConnected;
+    private boolean mIsControlCancelledOnce;
+    private boolean mIsChargingToggleSupported;
+    private boolean mIsChargingBypassSupported;
+    private boolean mIsChargingDeadlineSupported;
+    private int mChargingStopReason;
+    private int mChargingTimeMargin;
+    private int mChargingLimitMargin;
 
     private static final DateTimeFormatter mFormatter = DateTimeFormatter.ofLocalizedTime(SHORT);
     private static final SimpleDateFormat mDateFormatter = new SimpleDateFormat("hh:mm:ss a");
@@ -147,6 +147,7 @@ public class ChargingControlController extends LineageHealthFeature {
 
         if (mChargingControl == null) {
             Log.i(TAG, "Lineage Health HAL not found");
+            return;
         }
 
         mChargingNotification = new ChargingControlNotification(context);
@@ -398,6 +399,8 @@ public class ChargingControlController extends LineageHealthFeature {
             return null;
         }
 
+        Log.i(TAG, "Target time is " + msToString(targetTime));
+
         return new ChargeTime(startTime, targetTime);
     }
 
@@ -576,25 +579,31 @@ public class ChargingControlController extends LineageHealthFeature {
             return;
         }
 
-        final ChargeTime t = getChargeTime();
-        if (t != null && t.getTargetTime() == mSavedTargetTime) {
-            return;
-        }
-
         long deadline = 0;
-        if (t == null || mIsControlCancelledOnce) {
+        final long targetTime;
+        final ChargeTime t = getChargeTime();
+
+        if (!mConfigEnabled || t == null || mIsControlCancelledOnce) {
             deadline = -1;
+            targetTime = 0;
+            Log.i(TAG, "Canceling charge deadline");
         } else {
-            mSavedTargetTime = t.getTargetTime();
-            final long targetTime = t.getTargetTime();
+            if (t.getTargetTime() == mSavedTargetTime) {
+                return;
+            }
+            targetTime = t.getTargetTime();
             final long currentTime = System.currentTimeMillis();
             deadline = (targetTime - currentTime) / 1000;
+            Log.i(TAG, "Setting charge deadline: Current time: " + msToString(currentTime));
+            Log.i(TAG, "Setting charge deadline: Target time: " + msToString(targetTime));
+            Log.i(TAG, "Setting charge deadline: Deadline (seconds): " + deadline);
         }
 
         try {
             mChargingControl.setChargingDeadline(deadline);
+            mSavedTargetTime = targetTime;
         } catch (IllegalStateException | RemoteException | UnsupportedOperationException e) {
-            Log.e(TAG, "Failed to set charge deadline");
+            Log.e(TAG, "Failed to set charge deadline", e);
         }
     }
 
