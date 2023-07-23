@@ -57,13 +57,6 @@ public final class LineageContextConstants {
     public static final String LINEAGE_HARDWARE_SERVICE = "lineagehardware";
 
     /**
-     * Control device power profile and characteristics.
-     *
-     * @hide
-     */
-    public static final String LINEAGE_PERFORMANCE_SERVICE = "lineageperformance";
-
-    /**
      * Manages display color adjustments
      *
      * @hide
@@ -121,27 +114,11 @@ public final class LineageContextConstants {
 
         /**
          * Feature for {@link PackageManager#getSystemAvailableFeatures} and
-         * {@link PackageManager#hasSystemFeature}: The device includes the lineage performance service
-         * utilized by the lineage sdk.
-         */
-        @SdkConstant(SdkConstant.SdkConstantType.FEATURE)
-        public static final String PERFORMANCE = "org.lineageos.performance";
-
-        /**
-         * Feature for {@link PackageManager#getSystemAvailableFeatures} and
          * {@link PackageManager#hasSystemFeature}: The device includes the LiveDisplay service
          * utilized by the lineage sdk.
          */
         @SdkConstant(SdkConstant.SdkConstantType.FEATURE)
         public static final String LIVEDISPLAY = "org.lineageos.livedisplay";
-
-        /**
-         * Feature for {@link PackageManager#getSystemAvailableFeatures} and
-         * {@link PackageManager#hasSystemFeature}: The device includes the Lineage audio extensions
-         * utilized by the lineage sdk.
-         */
-        @SdkConstant(SdkConstant.SdkConstantType.FEATURE)
-        public static final String AUDIO = "org.lineageos.audio";
 
         /**
          * Feature for {@link PackageManager#getSystemAvailableFeatures} and
