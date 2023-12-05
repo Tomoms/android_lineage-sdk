@@ -16,7 +16,6 @@ public class LineageMetricsLogger extends MetricsLogger {
     //Since we never want to collide, lets start at the back and move inward
     public static final int DONT_LOG = BASE + 1;
 
-    public static final int ANONYMOUS_STATS = BASE + 2;
     public static final int APP_GROUP_CONFIG = BASE + 3;
     public static final int APP_GROUP_LIST = BASE + 4;
     public static final int BATTERY_LIGHT_SETTINGS = BASE + 5;
