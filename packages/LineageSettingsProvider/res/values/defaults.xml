@@ -8,9 +8,6 @@
 
     <!-- Defaults for Secure -->
 
-    <!-- Default for LineageSettings.Secure.STATS_COLLECTION -->
-    <bool name="def_stats_collection">false</bool>
-
     <!-- Default for LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED -->
     <bool name="def_lockscreen_visualizer">false</bool>
 
