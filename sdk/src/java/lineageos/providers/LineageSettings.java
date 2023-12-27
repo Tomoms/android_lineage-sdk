@@ -1397,7 +1397,7 @@ public final class LineageSettings {
 
         /** @hide */
         public static final Validator CHARGING_CONTROL_LIMIT_VALIDATOR =
-                new InclusiveIntegerRangeValidator(70, 100);
+                new InclusiveIntegerRangeValidator(50, 100);
 
         /**
          * Whether the battery light should be enabled (if hardware supports it)
