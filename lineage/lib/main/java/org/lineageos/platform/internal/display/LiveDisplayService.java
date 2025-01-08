@@ -1,9 +1,13 @@
 /*
  * SPDX-FileCopyrightText: 2016 The CyanogenMod Project
- * SPDX-FileCopyrightText: 2017-2019,2021 The LineageOS Project
+ * SPDX-FileCopyrightText: 2017-2024 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 package org.lineageos.platform.internal.display;
+
+import static lineageos.hardware.LiveDisplayManager.MODE_FIRST;
+import static lineageos.hardware.LiveDisplayManager.MODE_LAST;
+import static lineageos.hardware.LiveDisplayManager.MODE_OFF;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -30,6 +34,12 @@ import org.lineageos.platform.internal.common.UserContentObserver;
 import org.lineageos.platform.internal.display.TwilightTracker.TwilightListener;
 import org.lineageos.platform.internal.display.TwilightTracker.TwilightState;
 
+import lineageos.app.LineageContextConstants;
+import lineageos.hardware.HSIC;
+import lineageos.hardware.ILiveDisplayService;
+import lineageos.hardware.LiveDisplayConfig;
+import lineageos.providers.LineageSettings;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -37,16 +47,6 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import lineageos.app.LineageContextConstants;
-import lineageos.hardware.HSIC;
-import lineageos.hardware.ILiveDisplayService;
-import lineageos.hardware.LiveDisplayConfig;
-import lineageos.providers.LineageSettings;
-
-import static lineageos.hardware.LiveDisplayManager.MODE_FIRST;
-import static lineageos.hardware.LiveDisplayManager.MODE_LAST;
-import static lineageos.hardware.LiveDisplayManager.MODE_OFF;
 
 /**
  * LiveDisplay is an advanced set of features for improving
@@ -210,12 +210,9 @@ public class LiveDisplayService extends LineageSystemService {
     }
 
     private void updateFeatures(final int flags) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < mFeatures.size(); i++) {
-                    mFeatures.get(i).update(flags, mState);
-                }
+        mHandler.post(() -> {
+            for (int i = 0; i < mFeatures.size(); i++) {
+                mFeatures.get(i).update(flags, mState);
             }
         });
     }
@@ -405,7 +402,7 @@ public class LiveDisplayService extends LineageSystemService {
 
 
     // Display postprocessing can have power impact.
-    private PowerManagerInternal.LowPowerModeListener mLowPowerModeListener =
+    private final PowerManagerInternal.LowPowerModeListener mLowPowerModeListener =
             new PowerManagerInternal.LowPowerModeListener() {
         @Override
         public void onLowPowerModeChanged(PowerSaveState state) {

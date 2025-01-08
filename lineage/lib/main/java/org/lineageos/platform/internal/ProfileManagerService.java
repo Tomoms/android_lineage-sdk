@@ -1,55 +1,57 @@
 /*
  * SPDX-FileCopyrightText: 2011-2015 CyanogenMod Project
- * SPDX-FileCopyrightText: 2017-2020 LineageOS Project
+ * SPDX-FileCopyrightText: 2017-2024 LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.platform.internal;
 
-import android.bluetooth.BluetoothAdapter;
+import android.app.ActivityManagerNative;
+import android.app.NotificationGroup;
+import android.app.backup.BackupManager;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.XmlResourceParser;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
+import android.os.ParcelUuid;
+import android.os.UserHandle;
+import android.text.TextUtils;
 import android.util.ArraySet;
+import android.util.Log;
+
 import com.android.internal.policy.IKeyguardService;
-import lineageos.providers.LineageSettings;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import android.app.ActivityManagerNative;
-import android.app.NotificationGroup;
-import android.app.backup.BackupManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.res.XmlResourceParser;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.UserHandle;
-import android.os.IBinder;
-import android.text.TextUtils;
-import android.util.Log;
-import android.os.ParcelUuid;
-
+import lineageos.app.IProfileManager;
 import lineageos.app.LineageContextConstants;
 import lineageos.app.Profile;
 import lineageos.app.ProfileGroup;
 import lineageos.app.ProfileManager;
-import lineageos.app.IProfileManager;
+import lineageos.providers.LineageSettings;
 
-import java.util.Collection;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,19 +87,14 @@ public class ProfileManagerService extends LineageSystemService {
             UUID.fromString("a126d48a-aaef-47c4-baed-7f0e44aeffe5");
     private NotificationGroup mWildcardGroup;
 
-    private Context mContext;
-    private Handler mHandler;
+    private final Context mContext;
+    private final Handler mHandler;
     private boolean mDirty;
     private BackupManager mBackupManager;
     private ProfileTriggerHelper mTriggerHelper;
     private Profile mEmptyProfile;
 
-    private Runnable mBindKeyguard = new Runnable() {
-        @Override
-        public void run() {
-            bindKeyguard();
-        }
-    };
+    private final Runnable mBindKeyguard = this::bindKeyguard;
     private IKeyguardService mKeyguardService;
     private final ServiceConnection mKeyguardConnection = new ServiceConnection() {
         @Override
@@ -116,7 +113,7 @@ public class ProfileManagerService extends LineageSystemService {
         }
     };
 
-    private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -169,8 +166,8 @@ public class ProfileManagerService extends LineageSystemService {
                 }
             }
             if (!selectProfile && blueToothTriggers.size() > 0) {
-                final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                final Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                final BluetoothManager btm = mContext.getSystemService(BluetoothManager.class);
+                final Set<BluetoothDevice> pairedDevices = btm.getAdapter().getBondedDevices();
                 final Set<String> connectedBTDevices = new ArraySet<>();
                 for (BluetoothDevice device : pairedDevices) {
                     if (device.isConnected()) connectedBTDevices.add(device.getAddress());
@@ -225,7 +222,7 @@ public class ProfileManagerService extends LineageSystemService {
     public ProfileManagerService(Context context) {
         super(context);
         mContext = context;
-        mHandler = new Handler(mHandlerCallback);
+        mHandler = new Handler(Looper.getMainLooper(), mHandlerCallback);
     }
 
     @Override
@@ -290,8 +287,8 @@ public class ProfileManagerService extends LineageSystemService {
 
     private void initialize(boolean skipFile) {
         mTriggerHelper = new ProfileTriggerHelper(mContext, mHandler, this);
-        mProfiles = new HashMap<UUID, Profile>();
-        mProfileNames = new HashMap<String, UUID>();
+        mProfiles = new HashMap<>();
+        mProfileNames = new HashMap<>();
         mGroups = new HashMap<UUID, NotificationGroup>();
         mEmptyProfile = new Profile("EmptyProfile");
         mDirty = false;
@@ -301,9 +298,7 @@ public class ProfileManagerService extends LineageSystemService {
         if (!skipFile) {
             try {
                 loadFromFile();
-            } catch (XmlPullParserException e) {
-                init = true;
-            } catch (IOException e) {
+            } catch (XmlPullParserException | IOException e) {
                 init = true;
             }
         }
