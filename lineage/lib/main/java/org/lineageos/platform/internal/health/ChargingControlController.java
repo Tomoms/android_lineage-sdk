@@ -561,6 +561,13 @@ public class ChargingControlController extends LineageHealthFeature {
                 Log.e(TAG, "Failed to set charging status");
             }
         }
+        if (isChargingEnabled && (mChargingStopReason == 0)) {
+            try {
+                mChargingControl.setChargingEnabled(true);
+            } catch (IllegalStateException | RemoteException | UnsupportedOperationException e) {
+                Log.e(TAG, "Failed to set charging status");
+            }
+        }
     }
 
     private void updateChargeDeadline() {
