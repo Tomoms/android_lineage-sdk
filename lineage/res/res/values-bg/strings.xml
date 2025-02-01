@@ -62,6 +62,8 @@
     <string name="megabitspersecond_short">Mб/с</string>
     <string name="kilobytespersecond_short">kБ/с</string>
     <string name="megabytespersecond_short">MБ/с</string>
+    <string name="kilobytespersecond_compact">k</string>
+    <string name="megabytespersecond_compact">M</string>
     <string name="trust_feature_name">Trust</string>
     <string name="permlab_trustInterface">достъп до Trust интерфейс</string>
     <string name="permdesc_trustInterface">Позволява на приложението да показка предложения и предупреждения</string>
@@ -72,4 +74,11 @@
     <string name="trust_notification_title_onboarding">Открийте Trust</string>
     <string name="trust_notification_content_onboarding">Разберете как да направите вашето устройство е безопасно</string>
     <string name="trust_notification_action_manage">Управление на предупрежденията</string>
+    <string name="charging_control_notification_channel">Управление на зареждането</string>
+    <string name="charging_control_notification_title">Управление на зареждането</string>
+    <string name="charging_control_notification_cancel_once">Отмени</string>
+    <string name="charging_control_notification_content_limit">Батерията ще бъде заредена до %1$d%%</string>
+    <string name="charging_control_notification_content_limit_reached">Батерията е заредена на %1$d%%</string>
+    <string name="charging_control_notification_content_target">Батерията ще бъде напълно заредена в %1$s</string>
+    <string name="charging_control_notification_content_target_reached">Батерията е напълно заредена</string>
 </resources>
