@@ -8,12 +8,12 @@
     <string name="lineageos_system_label">Sistema de LineageOS</string>
     <string name="permlab_modifyProfiles">modificar los perfiles del sistema</string>
     <string name="permdesc_modifyProfiles">Permite que una aplicación modifique los perfiles del sistema.</string>
-    <string name="permlab_useHardwareFramework">usar marco de hardware</string>
+    <string name="permlab_useHardwareFramework">usar estructura de hardware</string>
     <string name="permdesc_useHardwareFramework">Permite el acceso de una aplicación a la estructura de hardware de Lineage.</string>
     <string name="permlab_writeSettings">modificar ajustes del sistema de Lineage</string>
     <string name="permdesc_writeSettings">Permite que una aplicación modifique los ajustes del sistema de Lineage.</string>
     <string name="permlab_writeSecureSettings">modificar ajustes del sistema de seguridad de Lineage</string>
-    <string name="permdesc_writeSecureSettings">Permitir que una aplicación modifique los ajustes del sistema de seguridad de Lineage. No apto para aplicaciones normales.</string>
+    <string name="permdesc_writeSecureSettings">Permitir a una aplicación modificar la configuración segura del sistema Lineage. No apto para aplicaciones normales.</string>
     <string name="profileNameDefault">Por defecto</string>
     <string name="profileNameWork">Trabajo</string>
     <string name="profileNameHome">Inicio</string>
@@ -36,8 +36,8 @@
     <string name="live_display_night_summary">Utilizar solo los ajustes de noche</string>
     <string name="live_display_outdoor">Al aire libre (luz del sol)</string>
     <string name="live_display_outdoor_summary">Utilizar solo los ajustes al aire libre</string>
-    <string name="live_display_hint">LiveDisplay puede reducir la fatiga visual y ayudarte a dormir por la noche. ¡Toca aquí para probarlo!</string>
-    <string name="accessibility_quick_settings_live_display_off">LiveDisplay desactivado.</string>
+    <string name="live_display_hint">LiveDisplay puede ayudar a reducir la fatiga visual y a conciliar el sueño por la noche. ¡Toca aquí para probarlo!</string>
+    <string name="accessibility_quick_settings_live_display_off">LiveDisplay apagado.</string>
     <string name="accessibility_quick_settings_live_display_auto">LiveDisplay: modo automático.</string>
     <string name="accessibility_quick_settings_live_display_day">LiveDisplay: modo diurno.</string>
     <string name="accessibility_quick_settings_live_display_night">LiveDisplay: modo nocturno.</string>
@@ -48,7 +48,7 @@
     <string name="accessibility_quick_settings_live_display_changed_night">LiveDisplay ha cambiado a modo nocturno.</string>
     <string name="accessibility_quick_settings_live_display_changed_outdoor">LiveDisplay ha cambiado a modo exterior.</string>
     <string name="permlab_manageLiveDisplay">administrar la configuración de LiveDisplay</string>
-    <string name="permdesc_manageLiveDisplay">Permite que una aplicación modifique la configuración de pantalla avanzada.</string>
+    <string name="permdesc_manageLiveDisplay">Permite a una aplicación configurar ajustes avanzados de la pantalla.</string>
     <string name="permlab_manageRemotePrefs">administrar la configuración remota</string>
     <string name="permdesc_manageRemotePrefs">Permite a una aplicación administrar la configuración remota</string>
     <string name="build_date">Fecha de compilación</string>
