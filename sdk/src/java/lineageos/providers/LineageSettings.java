@@ -2763,7 +2763,7 @@ public final class LineageSettings {
 
         /**
          * Top to half of the screen height are the valid values
-         * @gide
+         * @hide
          */
         public static final Validator GESTURE_BACK_EXCLUDE_TOP_VALIDATOR =
                 new InclusiveIntegerRangeValidator(0, 50);
@@ -2931,6 +2931,7 @@ public final class LineageSettings {
          */
         public static final String VOLUME_PANEL_ON_LEFT = "volume_panel_on_left";
 
+        /** @hide */
         public static final Validator VOLUME_PANEL_ON_LEFT_VALIDATOR =
                 sBooleanValidator;
 
