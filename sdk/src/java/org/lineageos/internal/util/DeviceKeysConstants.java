@@ -33,6 +33,7 @@ public class DeviceKeysConstants {
         NOTIFICATIONS,
         QS_PANEL,
         RINGER_MODES;
+        PLAY_PAUSE_MUSIC;
 
         public static Action fromIntSafe(int id) {
             if (id < NOTHING.ordinal() || id > Action.values().length) {
