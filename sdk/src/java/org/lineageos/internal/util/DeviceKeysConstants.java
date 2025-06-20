@@ -32,7 +32,7 @@ public class DeviceKeysConstants {
         CLEAR_ALL_NOTIFICATIONS,
         NOTIFICATIONS,
         QS_PANEL,
-        RINGER_MODES;
+        RINGER_MODES,
         PLAY_PAUSE_MUSIC;
 
         public static Action fromIntSafe(int id) {
