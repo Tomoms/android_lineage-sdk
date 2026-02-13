@@ -274,9 +274,7 @@ public class NetworkTraffic extends TextView {
                     case UNITS_MEGABYTES:
                         {
                             final String format;
-                            if (kbps < 80000) {
-                                format = "%.2f";
-                            } else if (kbps < 800000) {
+                            if (kbps < 800000) {
                                 format = "%.1f";
                             } else {
                                 format = "%.0f";
@@ -478,6 +476,10 @@ public class NetworkTraffic extends TextView {
                 LineageSettings.Secure.NETWORK_TRAFFIC_UNITS, UNITS_KILOBYTES);
         mShowUnits = LineageSettings.Secure.getInt(resolver,
                 LineageSettings.Secure.NETWORK_TRAFFIC_SHOW_UNITS, SHOW_UNITS_ON);
+        final boolean dualDirectionMode = mMode == MODE_UPSTREAM_AND_DOWNSTREAM;
+        setSingleLine(!dualDirectionMode);
+        setMaxLines(dualDirectionMode ? 2 : 1);
+        setIncludeFontPadding(false);
 
         manageNetworkCallbacks();
 
