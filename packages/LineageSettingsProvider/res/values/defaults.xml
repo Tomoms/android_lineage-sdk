@@ -68,6 +68,9 @@
     -->
     <integer name="def_clock_position">2</integer>
 
+    <!-- Default for LineageSettings.System.HIDE_STATUS_BAR_IN_SCREENSHOT -->
+    <bool name="def_hide_status_bar_in_screenshot">false</bool>
+
     <!-- Defaults for AOSP Global -->
 
     <!-- Default for Settings.Global.DISABLE_WINDOW_BLURS -->

@@ -486,6 +486,9 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
             loadIntegerSetting(stmt, LineageSettings.System.STATUS_BAR_CLOCK,
                     R.integer.def_clock_position);
 
+            loadBooleanSetting(stmt, LineageSettings.System.HIDE_STATUS_BAR_IN_SCREENSHOT,
+                    R.bool.def_hide_status_bar_in_screenshot);
+
             if (mContext.getResources().getBoolean(R.bool.def_notification_pulse_custom_enable)) {
                 loadStringSetting(stmt, LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES,
                         R.string.def_notification_pulse_custom_value);

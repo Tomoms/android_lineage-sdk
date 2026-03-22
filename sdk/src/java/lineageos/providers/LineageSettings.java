@@ -2088,6 +2088,16 @@ public final class LineageSettings {
                 sBooleanValidator;
 
         /**
+         * Whether to hide the status bar area in full screenshots.
+         */
+        public static final String HIDE_STATUS_BAR_IN_SCREENSHOT =
+                "hide_status_bar_in_screenshot";
+
+        /** @hide */
+        public static final Validator HIDE_STATUS_BAR_IN_SCREENSHOT_VALIDATOR =
+                sBooleanValidator;
+
+        /**
          * Whether to enable taskbar.
          */
         public static final String ENABLE_TASKBAR = "enable_taskbar";
@@ -2271,6 +2281,8 @@ public final class LineageSettings {
                     FORCE_SHOW_NAVBAR_VALIDATOR);
             VALIDATORS.put(CLICK_PARTIAL_SCREENSHOT,
                     CLICK_PARTIAL_SCREENSHOT_VALIDATOR);
+            VALIDATORS.put(HIDE_STATUS_BAR_IN_SCREENSHOT,
+                    HIDE_STATUS_BAR_IN_SCREENSHOT_VALIDATOR);
             VALIDATORS.put(ENABLE_TASKBAR,
                     ENABLE_TASKBAR_VALIDATOR);
             VALIDATORS.put(__MAGICAL_TEST_PASSING_ENABLER,
