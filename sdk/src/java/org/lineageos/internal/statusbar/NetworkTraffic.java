@@ -14,6 +14,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
@@ -128,6 +129,9 @@ public class NetworkTraffic extends TextView {
         mTextSizeMulti = resources.getDimensionPixelSize(R.dimen.net_traffic_multi_text_size);
 
         mNetworkTrafficIsVisible = false;
+
+        // Use emphasized variable font to match other elements in sb.
+        setTypeface(Typeface.create("variable-label-large-emphasized", Typeface.NORMAL));
 
         mConnectivityManager = mContext.getSystemService(ConnectivityManager.class);
         mTrafficHandler = new Handler(mContext.getMainLooper()) {
