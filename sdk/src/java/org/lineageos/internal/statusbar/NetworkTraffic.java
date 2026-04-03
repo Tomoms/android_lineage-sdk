@@ -220,13 +220,11 @@ public class NetworkTraffic extends TextView {
                     }
 
                     // Ensure text size is where it needs to be
-                    int textSize;
                     if (showUpstream && showDownstream) {
                         output.append("\n");
-                        textSize = mTextSizeMulti;
-                    } else {
-                        textSize = mTextSizeSingle;
                     }
+                    // Universally use the smaller multi-line text size
+                    int textSize = mTextSizeMulti;
 
                     // Add information for downlink if it's called for
                     if (showDownstream) {
@@ -292,7 +290,13 @@ public class NetworkTraffic extends TextView {
 
                 if (mShowUnits > SHOW_UNITS_OFF && unitid != 0) {
                     unit = mContext.getString(unitid);
-                    return value + " " + unit;
+                    if (mMode == MODE_UPSTREAM_AND_DOWNSTREAM) {
+                        // Keep on same line for dual mode (remove the space if you want it extra compact)
+                        return value + " " + unit; 
+                    } else {
+                        // Stack number and unit for single direction modes
+                        return value + "\n" + unit;
+                    }
                 } else {
                     return value;
                 }
@@ -476,10 +480,13 @@ public class NetworkTraffic extends TextView {
                 LineageSettings.Secure.NETWORK_TRAFFIC_UNITS, UNITS_KILOBYTES);
         mShowUnits = LineageSettings.Secure.getInt(resolver,
                 LineageSettings.Secure.NETWORK_TRAFFIC_SHOW_UNITS, SHOW_UNITS_ON);
-        final boolean dualDirectionMode = mMode == MODE_UPSTREAM_AND_DOWNSTREAM;
-        setSingleLine(!dualDirectionMode);
-        setMaxLines(dualDirectionMode ? 2 : 1);
+        // Always allow 2 lines so single mode can stack the unit
+        setSingleLine(false);
+        setMaxLines(2);
         setIncludeFontPadding(false);
+        
+        // Force the text to center align horizontally and vertically
+        setGravity(android.view.Gravity.CENTER);
 
         manageNetworkCallbacks();
 
